@@ -29,23 +29,28 @@ function transform(arr) {
         }
     });
 
-    const handleTransform = (index, delCount, newEl) => {
-        newArr.splice(index, delCount, newEl);
+    const handleTransform = (index, delCount, newEl, element, method) => {
+        if (element !== undefined) {
+            if (newEl === null) newArr.splice(index, delCount);
+            if (newEl !== null) newArr.splice(index, delCount, newEl);
+        } else {
+            newArr.splice(method, 1);
+        }
     };
 
     const index = currentMethod.index;
     switch (currentMethod.method) {
         case "--discard-next":
-            handleTransform(index, 3, newArr[index + 2]);
+            handleTransform(index, 2, null, newArr[index + 1], index);
             break;
         case "--discard-prev":
-            handleTransform(index - 2, 3, newArr[index - 2]);
+            handleTransform(index - 1, 2, null, newArr[index - 1], index);
             break;
         case "--double-next":
-            handleTransform(index, 1, newArr[index + 1]);
+            handleTransform(index, 1, newArr[index + 1], newArr[index + 1], index);
             break;
         case "--double-prev":
-            handleTransform(index, 1, newArr[index - 1]);
+            handleTransform(index, 1, newArr[index - 1], newArr[index - 1], index);
             break;
 
         default:
